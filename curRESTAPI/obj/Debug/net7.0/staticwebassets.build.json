@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "AUKCmwDU6gJixUp4ZfWCgm1nrjDBLRXCw7liRfFvLTU=",
+  "Source": "curRESTAPI",
+  "BasePath": "_content/curRESTAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
