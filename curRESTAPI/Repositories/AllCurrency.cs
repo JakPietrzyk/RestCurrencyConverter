@@ -1,10 +1,19 @@
 ﻿using curRESTAPI.Dtos;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 namespace curRESTAPI.Repositories
 {
     public class AllCurrency : IAllCurrency
     {
+        private const string databaseName = "currencyNames";
+        private const string collectionName = "currency";
+        private readonly IMongoCollection<CurrencyNames> currencyCollection;
+        public AllCurrency(IMongoClient mongoClient)
+        {
+            IMongoDatabase database = mongoClient.GetDatabase(databaseName);
+            currencyCollection = database.GetCollection<CurrencyNames>(collectionName);
+        }
 
         public async Task<IEnumerable<Root>> GetTenLastAsync()
         {
@@ -19,11 +28,17 @@ namespace curRESTAPI.Repositories
             CurrencyNames items = await GetCurrencyNames();
             List<CurrencyNames> result = new List<CurrencyNames>();
             result.Add(items);
+            currencyCollection.InsertOne(items);
             return result;
         }
         public async Task<Root> GetLastAsync()
         {
             Root item = await GetLastValue("eur");
+            return item;
+        }
+        public async Task<Root> GetLastCurrencyUserDefined(string name)
+        {
+            Root item = await GetLastValue(name);
             return item;
         }
 
@@ -36,7 +51,7 @@ namespace curRESTAPI.Repositories
         }
         public static async Task<CurrencyNames> GetCurrencyNames()
         {
-            string url = "https://api.nbp.pl/api/exchangerates/tables/a/today/?format=json";
+            string url = "https://api.nbp.pl/api/exchangerates/tables/a/?format=json";
             CurrencyNames val = new CurrencyNames();
             val = await GetNamesData<CurrencyNames>(url);
             return val;

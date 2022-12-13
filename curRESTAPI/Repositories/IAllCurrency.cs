@@ -7,5 +7,6 @@ namespace curRESTAPI.Repositories
         Task<IEnumerable<Root>> GetTenLastAsync();
         Task<IEnumerable<CurrencyNames>> GetAllAsync();
         Task<Root> GetLastAsync();
+        Task<Root> GetLastCurrencyUserDefined(string name);
     }
 }
